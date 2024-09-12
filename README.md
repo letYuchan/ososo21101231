@@ -10,4 +10,4 @@ Currently, I am taking the **Open Source Software** class taught by **Professor 
 
 I specialize in **front-end development**!!!!.
 
-[![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=dbcks023)](https://solved.ac/daun5535/)[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=letYuchan&langs_count=10&layout=compact&theme=default)](https://github.com/letYuchan/ososo21101231)﻿
+[![Solved.ac Profile](http://mazassumnida.wtf/api/v2/generate_badge?boj=dbcks023)](https://solved.ac/dbcks023/)[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=letYuchan&langs_count=10&layout=compact&theme=default)](https://github.com/letYuchan/ososo21101231)﻿
