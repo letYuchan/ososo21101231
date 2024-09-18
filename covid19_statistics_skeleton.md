@@ -1,4 +1,3 @@
-# 마크다운 파일 쓰기
 with open("covid19_statistics.md", "w") as f:
 
     # 인구 데이터 출력
