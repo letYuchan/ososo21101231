@@ -44,7 +44,7 @@ class RunawayGame:
 
         # End game after 60 seconds
         if elapsed_time > 60:  # After 60 seconds
-            self.end_game(won=False)
+            self.end_game(won=True)  # Update to indicate the runner won
 
     def update_score(self):
         """ Update score; increase if the runner is not caught """
@@ -80,9 +80,9 @@ class RunawayGame:
         """ Function called on game end """
         self.drawer.setpos(-200, 0)
         if won:
-            self.drawer.write("You Win!", font=("Arial", 24, "normal"))
+            self.drawer.write("You loose! The runner escaped!", font=("Arial", 24, "normal"))  # Runner escapes message
         else:
-            self.drawer.write("Game Over! You got caught!", font=("Arial", 24, "normal"))
+            self.drawer.write("You WIN! you caught the runner", font=("Arial", 24, "normal"))
         self.canvas.bye()  # End game
 
     def start(self, init_dist=400, ai_timer_msec=100):
@@ -123,22 +123,28 @@ class SmartChaser(turtle.RawTurtle):
         self.setheading(self.towards(runner_pos))  # Set direction towards runner
         self.forward(self.step_move)
 
-class RandomMover(turtle.RawTurtle):
-    """ Runner class that moves randomly """
-    def __init__(self, canvas, step_move=10, step_turn=10):
+class SmartRunner(turtle.RawTurtle):
+    """ Runner class that moves strategically to avoid the chaser """
+    def __init__(self, canvas, step_move=10, step_turn=10, escape_distance=150):
         super().__init__(canvas)
         self.step_move = step_move
         self.step_turn = step_turn
+        self.escape_distance2 = escape_distance ** 2
 
-    def run_ai(self, opp_pos, opp_heading):
-        """ Randomly set direction and move """
-        mode = random.randint(0, 2)
-        if mode == 0:
+    def run_ai(self, chaser_pos, chaser_heading):
+        """ Move intelligently to avoid chaser if close """
+        p = self.pos()
+        q = chaser_pos
+        dx, dy = p[0] - q[0], p[1] - q[1]
+
+        # If chaser is within escape distance, move in the opposite direction
+        if dx ** 2 + dy ** 2 < self.escape_distance2:
+            self.setheading(self.towards(chaser_pos) + 180)  # Move away from chaser
             self.forward(self.step_move)
-        elif mode == 1:
-            self.left(self.step_turn)
-        elif mode == 2:
-            self.right(self.step_turn)
+        else:
+            self.forward(self.step_move)
+            if random.random() < 0.2:
+                self.left(self.step_turn if random.random() < 0.5 else -self.step_turn)
 
 if __name__ == '__main__':
     root = tk.Tk()
@@ -146,7 +152,7 @@ if __name__ == '__main__':
     canvas.pack()
     screen = turtle.TurtleScreen(canvas)
 
-    runner = RandomMover(screen)
+    runner = SmartRunner(screen)
     chaser = ManualMover(screen)
 
     # Change shape to default turtle shape and set colors
